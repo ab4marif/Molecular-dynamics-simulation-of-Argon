@@ -28,6 +28,16 @@ useful.
 ## Week 1
 (due before 18 February)
 
+- We will store each particles velocity and postion in a 1xN dimensional array. For the initial values we will use a gaussian distribution. This will be done by Kadhim
+
+- first differentiate the lennard jones potential analytically, then we use that to calculate the force. For this we need the distance for the nearest neighbor. We will examine the elements of the position vector and subtract each element to get the shortest distance. This will be done by Achmed
+
+-  for this task a for loop will be used to calculate the time evolution for both position and velocity. This will be done by Kadhim
+
+- We set up a box of lenght L. Once a particle crosses the boundary we will subtract the length of the box to that particle. This will be done by Achmed
+
+- The energy function will consist of the kinetic energy and potential(lennard jones potential). This will be done by both of us
+
 
 ## Week 2
 (due before 25 February)
