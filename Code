@@ -92,7 +92,7 @@ eps = 119.8*1.38*10**-23
 sigma = 3.405E-10
 mass = 6.6E-26
 dt = 0.01
-N = 10 #number of particles
+N = 2 #number of particles
 Nt = 10 #number of time steps
 L = 1 # length box
 
