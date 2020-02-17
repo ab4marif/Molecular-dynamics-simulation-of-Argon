@@ -38,6 +38,30 @@ useful.
 
 - The energy function will consist of the kinetic energy and potential(lennard jones potential). This will be done by both of us
 
+#Progress:
+
+- At first, the packages numpy and matplotlib.pyplot were imported. The next step is to define all functions beforehand to be able to recall them later.
+
+- input parameters such as box lentgh, number of particles, time steps and constants (SI units) are then defined.
+
+- Position and velocity arrays were defined for a 2D problem. For that np.random is used which is based on a uniform distribution.
+
+- In order to keep track of the system, 2 atoms were used instead of 100. 
+
+- The analytical expression for the potential energy (Lennard Jones) is used to determine the force. This is done by a matrix calculation instead of using a for loop.
+
+- The position matrix is filled with 1's on the diagonal to avoid division by zero. This is set again to zero after the division.
+
+- The modules is used to implement the periodic boundry conditions. If x is longer then the side lentgh of the box, the the "rest" (modules) will be taken as numerical value. This again to avoid using for loop.
+
+- For the evolution in time The Euler method is used. A for loop is used for the arrays to evolve in time. 
+
+- At the end the function of the total energy is recalled and all numerical data can be printed. 
+
+- low values for the energies were to expect since SI units are used. 
+
+
+
 
 ## Week 2
 (due before 25 February)
