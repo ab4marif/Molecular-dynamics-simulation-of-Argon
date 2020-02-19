@@ -66,6 +66,17 @@ useful.
 ## Week 2
 (due before 25 February)
 
+- First we are going to generalize the code by defining matrices instead of column vectors for each direction.
+
+- An analytical epxression will be derives for the kinetic energy.
+
+- A new expression will be derived for the position, momentum and the time in order to change the molucialr dynamics representation of the problem.
+
+- Our is to use the modules method the impliment the minimal image convention.
+
+- A new dimension will be added to the code in order to be a 3D problem. Depending op bullet point 3, we will discuss a suitable size for the box. We may also change the distrubtion of the particles in order to be close to the boundary of the box.
+
+- The new position coordinates that evolves in time will be stored in a array to keep track of the system.
 
 ## Week 3
 (due before 3 March)
