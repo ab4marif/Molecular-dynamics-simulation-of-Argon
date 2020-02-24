@@ -78,6 +78,32 @@ useful.
 
 - The new position coordinates that evolves in time will be stored in a array to keep track of the system.
 
+#Progress:
+
+- A general matrix is defined for the different directions, as follows:
+    
+    r = np.zeros((N, D, Timesteps))
+    r[:,:,0] = createCoordinate(N, D)
+
+- A new function is defined for the unitless expression for the kinetic energy:
+
+    def kinet_en(mass, v_tilde):
+        T_tilde = 0.5*mass*v_tilde**2
+
+- All the relevant quantities are scaled to be unitless.
+
+- the lectures notes are used to derive an expression for the minimal image convention.
+
+- it is possible to expand the dimensions to any preferable size.
+
+- A matrix is made in order to store the time evolution of the system:
+
+    r_tilde = np.zeros((N, D, Timesteps))
+    r_tilde[:,:,0] = unitless_r(r[:,:,0], sigma).
+    
+- A nice animation is added to the main page.
+
+
 ## Week 3
 (due before 3 March)
 
