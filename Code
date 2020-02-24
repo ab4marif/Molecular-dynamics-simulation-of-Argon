@@ -1,68 +1,110 @@
 import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
+from matplotlib import animation
 
 
-def calcforce(x , y, N, eps, sigma):
-    """ 
-    This function calculates the force on a particle due to the Lennard Jones potential.
-
-    INPUT:
-            it takes as input the coordinates of the particle,
-            the number of particles and the constants epsilon and sigma.
-
-    OUTPUT: 
-            The force in the x and Y direction Fx, Fy
 
 
-    """
+def createCoordinate(Numberparticles, Dimension):
+    return np.random.random((Numberparticles,Dimension))*L
+
+def createVelocity(Numberparticles, Dimension):
+    return np.random.random((Numberparticles,Dimension))
+
+def calculateDistance(r):
+    N = r.shape[0]
+    D = r.shape[1]
+        
+    bigR = np.broadcast_to(r, (N, N, D))
+    bigRT = np.transpose(bigR, (1, 0, 2))
     
-    # Create a distance matrix for all particles
+    deltaR = bigR - bigRT
     
-    r = np.sqrt(x**2 + y**2) #distance r to the origin
-    ba, bb = np.meshgrid(r,r)
-    bt = bb.T
-    rmatrix = np.abs(bb-bt) # distance matrix
-
-    # from the distance matrix calculate the derivative potential in the x and y direction to calculate the force in both directions
+    # minimal image implementation
+    deltaR = (deltaR + L/2)%L - L/2
     
-    np.fill_diagonal(rmatrix,1) # fill the diagonal with 1 to avoid division by zero
-    delumatrix_x = 4*eps*x*(6*sigma**6/rmatrix**8 - 12*sigma**12/rmatrix**14 )
-    delumatrix_y = 4*eps*y*(6*sigma**6/rmatrix**8 - 12*sigma**12/rmatrix**14 )
-    np.fill_diagonal(delumatrix_x,0) # make the diagonal zero again
-    np.fill_diagonal(delumatrix_y,0)
+    return deltaR
+
+def calculateForce(r, eps, sigma):
+    deltaR = calculateDistance(r)
     
-    # create an empty vector with size N and fill the vector with the sum of the derivative potential matrix for a resulting force 
-    Fx = np.zeros(N)
-    Fy = np.zeros(N)
-    for i in range(N):
-        Fx[i:] = -np.sum(delumatrix_x[i])
-        Fy[i:] = -np.sum(delumatrix_y[i])
-
-    return Fx, Fy
-
-def euler(x, y, vx, vy, Fx, Fy):
-    """ 
-    This function implements the euler method.
-
-    INPUT:
-            it takes as input the coordinates of the particle,
-            velocity and force of the particle
-
-    OUTPUT: 
-            New coordinates and velocity due to the force, x, y, vx, vy
-
-    """
-    vx = vx + 1/mass*Fx*dt
-    vy = vy + 1/mass*Fy*dt
-
-    x = x + vx*dt
-    y = y + vy*dt
+    normR = np.linalg.norm(deltaR, axis = 2, keepdims = True)
+    mask = np.eye(N, dtype = bool)
+    normR[mask,:] = 1
     
-    #boundary conditions
-    x = x%L
-    y = y%L
-    return x, y, vx, vy
     
+    deltaU = 4*eps*(6*sigma**6/normR**8 - 12*sigma**12/normR**14)*deltaR
+    F = -np.sum(deltaU, axis = 1 )
+    
+    return F
+
+def eulerMethod(r, v):
+    F = calculateForce(r, eps, sigma)
+    v = v + 1/mass*F*dt
+    r = r + v*dt
+    
+    # boundary
+    r = r%L
+    return r, v
+
+
+
+dt = 3e-11
+eps = 119.8*1.38*10**-23
+sigma = 3.405E-10
+mass = 6.6E-26 
+N = 5
+D = 2
+L = 2e-9
+Timesteps = 100 #timesteps
+
+r = np.zeros((N, D, Timesteps))
+r[:,:,0] = createCoordinate(N, D)
+v = createVelocity(N,D)*0
+F = calculateForce(r[:,:,0], eps, sigma)
+
+
+for i in range(1,Timesteps):
+    r[:,:,i], v = eulerMethod(r[:,:,i-1] , v)
+    
+plt.plot(r[0,0,:], r[0,1,:], 'ro')
+plt.plot(r[1,0,:], r[1,1,:], 'bo')
+
+
+
+##################################################################################################################
+############################ Animation ###########################################################################
+
+
+# First set up the figure, the axis, and the plot element we want to animate
+fig = plt.figure()
+ax = plt.axes(xlim=(0, L), ylim=(0, L))
+line, = ax.plot([], [], 'o', lw=2)
+
+# initialization function: plot the background of each frame
+def init():
+    line.set_data([], [])
+    return line,
+
+# animation function.  This is called sequentially
+def animate(i):
+    x = r[:,0,i]
+    y = r[:,1,i]
+    line.set_data(x, y)
+    return line,
+
+# call the animator.  blit=True means only re-draw the parts that have changed.
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=Timesteps, interval=20, blit=True)
+
+
+anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+
+#plt.show()
+
+
+
+
 
 def LJpotentialEnergy(x, y, eps, sigma):
     r = np.sqrt(x**2 + y**2) #distance r to the origin
