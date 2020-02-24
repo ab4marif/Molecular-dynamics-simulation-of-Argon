@@ -103,57 +103,5 @@ anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
 #plt.show()
 
 
-
-
-
-def LJpotentialEnergy(x, y, eps, sigma):
-    r = np.sqrt(x**2 + y**2) #distance r to the origin
-    ba, bb = np.meshgrid(r,r)
-    bt = bb.T
-    rmatrix = np.abs(bb-bt) # distance matrix
-    np.fill_diagonal(rmatrix,1)
-
-    potentialmatrix = 4*eps*(sigma**12/rmatrix**12 - sigma**6/rmatrix**6 )
-    np.fill_diagonal(potentialmatrix,0)
-
-    return np.sum(potentialmatrix)
-
-def kineticenergy(vx, vy, mass):
-    v = np.sqrt(vx**2 + vy**2)
-    E = 0.5*mass*v**2
-
-    return np.sum(E)
-
-def totalenergy(x, y, eps, sigma, vx, vy, mass):
-    return kineticenergy(vx, vy, mass) + LJpotentialEnergy(x, y, eps, sigma)
-
-
-    
-# constansts
-eps = 119.8*1.38*10**-23
-sigma = 3.405E-10
-mass = 6.6E-26
-dt = 0.01
-N = 2 #number of particles
-Nt = 10 #number of time steps
-L = 1 # length box
-
-# initialazing the positions and the velocity of each particle and storing it in a vector.
-x = np.random.random(N) 
-y = np.random.random(N)
-vx = np.random.random(N)
-vy = np.random.random(N)
-
-# looping over the amount of time steps we want to take
-
-for time in range(Nt):
-    # first calculating the force
-    Fx, Fy = calcforce(x , y, N, eps, sigma)
-    # using the force to get new positions and velocity 
-    x, y, vx, vy = euler(x, y, vx, vy, Fx, Fy)
-    
-    plt.plot(x,y,'ro')
-
-print('The total energy of the system is: ',totalenergy(x, y, eps, sigma, vx, vy, mass))
     
     
