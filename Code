@@ -33,7 +33,7 @@ def calculateForce(r, eps, sigma):
     normR[mask,:] = 1
     
     
-    deltaU = 4*eps*(6*sigma**6/normR**8 - 12*sigma**12/normR**14)*deltaR
+    deltaU = (24/normR**8 - 48/normR**14)*deltaR
     F = -np.sum(deltaU, axis = 1 )
     
     return F
@@ -48,29 +48,101 @@ def eulerMethod(r, v):
     return r, v
 
 
+def unitless_r(r, sigma):
+    r_tilde = r/sigma
+    return r_tilde
 
-dt = 3e-11
-eps = 119.8*1.38*10**-23
-sigma = 3.405E-10
-mass = 6.6E-26 
+def unitless_t(dt, mass, eps, sigma):
+    t_tilde = dt/np.sqrt(mass*(sigma**2)/eps)
+    return t_tilde
+
+def unitless_v(v, eps, mass):
+    v_tilde = v/np.sqrt(eps/mass)
+    return v_tilde
+
+def kinet_en(mass, v_tilde):
+    T_tilde=0.5*mass*v_tilde**2
+    
+
+
+
+
+def potentialEnergy(r):
+    deltaR = calculateDistance(r)
+    normR = np.linalg.norm(deltaR, axis = 2)
+    mask = np.eye(N, dtype = bool)
+
+    normR[mask] = 1
+    
+    U = 4*eps*(sigma**12/normR**12 - sigma**6/normR**6 )
+    U[mask] = 0
+ 
+
+    Utot = 0.5*np.sum(U)
+    return Utot
+
+
+def kineticEnergy(v):
+    return np.sum(0.5*mass*np.linalg.norm(v)**2)
+
+
+
+
+
+    
+
+
+
+
+dt = 3e-1
+eps = 1
+sigma = 1
+mass = 1 
 N = 5
 D = 2
-L = 2e-9
+L = 10*sigma #1e-15
 Timesteps = 100 #timesteps
 
 r = np.zeros((N, D, Timesteps))
 r[:,:,0] = createCoordinate(N, D)
-v = createVelocity(N,D)*0
-F = calculateForce(r[:,:,0], eps, sigma)
 
+#dt = np.zeros((N, D, Timesteps))
+dt = unitless_t(dt, mass, eps, sigma)
+
+r_tilde = np.zeros((N, D, Timesteps))
+r_tilde[:,:,0] = unitless_r(r[:,:,0], sigma)
+
+
+v = createVelocity(N,D)*0
+v_tilde = unitless_v(v, eps, mass)
+
+F = calculateForce(r_tilde[:,:,0], eps, sigma)
+
+
+kineticE = np.zeros(Timesteps)
+potentialE = np.zeros(Timesteps)
 
 for i in range(1,Timesteps):
+    kineticE[i] = kineticEnergy(v)
+    potentialE[i] = potentialEnergy(r[:,:,i-1])
     r[:,:,i], v = eulerMethod(r[:,:,i-1] , v)
     
 plt.plot(r[0,0,:], r[0,1,:], 'ro')
 plt.plot(r[1,0,:], r[1,1,:], 'bo')
 
 
+
+
+plt.figure()
+plt.plot(np.arange(Timesteps), kineticE)
+
+
+plt.figure()
+plt.plot(np.arange(Timesteps), potentialE)
+
+plt.figure()
+plt.plot(np.arange(Timesteps), potentialE + kineticE)
+plt.show()          # for IDLE
 
 ##################################################################################################################
 ############################ Animation ###########################################################################
