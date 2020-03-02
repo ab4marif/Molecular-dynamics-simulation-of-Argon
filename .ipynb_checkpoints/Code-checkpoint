@@ -1,0 +1,179 @@
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib import animation
+
+
+
+
+def createCoordinate(Numberparticles, Dimension):
+    return np.random.random((Numberparticles,Dimension))*L
+
+def createVelocity(Numberparticles, Dimension):
+    return np.random.random((Numberparticles,Dimension))
+
+def calculateDistance(r):
+    N = r.shape[0]
+    D = r.shape[1]
+        
+    bigR = np.broadcast_to(r, (N, N, D))
+    bigRT = np.transpose(bigR, (1, 0, 2))
+    
+    deltaR = bigR - bigRT
+    
+    # minimal image implementation
+    deltaR = (deltaR + L/2)%L - L/2
+    
+    return deltaR
+
+def calculateForce(r, eps, sigma):
+    deltaR = calculateDistance(r)
+    
+    normR = np.linalg.norm(deltaR, axis = 2, keepdims = True)
+    mask = np.eye(N, dtype = bool)
+    normR[mask,:] = 1
+    
+    
+    deltaU = (24/normR**8 - 48/normR**14)*deltaR
+    F = -np.sum(deltaU, axis = 1 )
+    
+    return F
+
+def eulerMethod(r, v):
+    F = calculateForce(r, eps, sigma)
+    v = v + 1/mass*F*dt
+    r = r + v*dt
+    
+    # boundary
+    r = r%L
+    return r, v
+
+
+def unitless_r(r, sigma):
+    r_tilde = r/sigma
+    return r_tilde
+
+def unitless_t(dt, mass, eps, sigma):
+    t_tilde = dt/np.sqrt(mass*(sigma**2)/eps)
+    return t_tilde
+
+def unitless_v(v, eps, mass):
+    v_tilde = v/np.sqrt(eps/mass)
+    return v_tilde
+
+def kinet_en(mass, v_tilde):
+    T_tilde=0.5*mass*v_tilde**2
+    
+
+
+
+
+def potentialEnergy(r):
+    deltaR = calculateDistance(r)
+    normR = np.linalg.norm(deltaR, axis = 2)
+    mask = np.eye(N, dtype = bool)
+
+    normR[mask] = 1
+    
+    U = 4*eps*(sigma**12/normR**12 - sigma**6/normR**6 )
+    U[mask] = 0
+ 
+
+    Utot = 0.5*np.sum(U)
+    return Utot
+
+
+def kineticEnergy(v):
+    return np.sum(0.5*mass*np.linalg.norm(v)**2)
+
+
+
+
+
+    
+
+
+
+
+dt = 3e-1
+eps = 1
+sigma = 1
+mass = 1 
+N = 5
+D = 2
+L = 10*sigma #1e-15
+Timesteps = 100 #timesteps
+
+r = np.zeros((N, D, Timesteps))
+r[:,:,0] = createCoordinate(N, D)
+
+#dt = np.zeros((N, D, Timesteps))
+dt = unitless_t(dt, mass, eps, sigma)
+
+r_tilde = np.zeros((N, D, Timesteps))
+r_tilde[:,:,0] = unitless_r(r[:,:,0], sigma)
+
+
+v = createVelocity(N,D)*0
+v_tilde = unitless_v(v, eps, mass)
+
+F = calculateForce(r_tilde[:,:,0], eps, sigma)
+
+
+kineticE = np.zeros(Timesteps)
+potentialE = np.zeros(Timesteps)
+
+for i in range(1,Timesteps):
+    kineticE[i] = kineticEnergy(v)
+    potentialE[i] = potentialEnergy(r[:,:,i-1])
+    r[:,:,i], v = eulerMethod(r[:,:,i-1] , v)
+    
+plt.plot(r[0,0,:], r[0,1,:], 'ro')
+plt.plot(r[1,0,:], r[1,1,:], 'bo')
+
+
+
+
+plt.figure()
+plt.plot(np.arange(Timesteps), kineticE)
+
+
+plt.figure()
+plt.plot(np.arange(Timesteps), potentialE)
+
+plt.figure()
+plt.plot(np.arange(Timesteps), potentialE + kineticE)
+plt.show()          # for IDLE
+
+##################################################################################################################
+############################ Animation ###########################################################################
+
+
+# First set up the figure, the axis, and the plot element we want to animate
+fig = plt.figure()
+ax = plt.axes(xlim=(0, L), ylim=(0, L))
+line, = ax.plot([], [], 'o', lw=2)
+
+# initialization function: plot the background of each frame
+def init():
+    line.set_data([], [])
+    return line,
+
+# animation function.  This is called sequentially
+def animate(i):
+    x = r[:,0,i]
+    y = r[:,1,i]
+    line.set_data(x, y)
+    return line,
+
+# call the animator.  blit=True means only re-draw the parts that have changed.
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=Timesteps, interval=20, blit=True)
+
+
+anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+
+#plt.show()
+
+
+    
+    
