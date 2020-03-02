@@ -105,7 +105,13 @@ useful.
 
 
 ## Week 3
-(due before 3 March)
+- The extension of the particles to 3D will be done by Ahmed.
+
+- The velocity-Verlet algorithm will be emplimented by Achmed.
+
+- The investigation of the total energy and the plots will be done by Kadhim.
+
+- Comparison of the results (Euler and Verlet) will be done by Kadhim.
 
 
 ## Week 4
