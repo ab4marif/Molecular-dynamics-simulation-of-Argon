@@ -140,7 +140,13 @@ useful.
 ![alt text](Euler_Method_Energies.png)
 
 ## Week 4
-(due before 10 March)
+- The initialization of positions onto an fcc lattice will be done by Achmed.
+
+- The initial velocities obey a Maxwell-Boltzmann distribution will be done by Kadhim.
+
+- the rescaling of temperature and show how the desired temperature is attained after a certain amount of rescaling and equilibrating by Achmed.
+
+- Studying the observables and comparison by the literature will be done by Kadhim.
 
 
 ## Week 5
