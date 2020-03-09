@@ -153,19 +153,19 @@ useful.
 
 - The positions of the atoms are distributed onto a FCC lattice.
 
-![alt text]FCC_lattice.png
+![alt text](FCC_lattice.png)
 
 - A normal distribuation is generated using SCIPY to observe the inititial velocities obeying the Maxwell-Boltzmann distribution.
 
-![alt text]WhatsApp Image 2020-03-09 at 20.05.44.jpeg
+![alt text](WhatsApp Image 2020-03-09 at 20.05.44.jpeg)
 
 - Stabilization of the energy to obtain the correct temperature is implimented.
 
-![alt text]Restabilization.png
+![alt text](Restabilization.png)
 
 - The specific heat according to Lebowitz is computed and the value is 104 in natural units.
 
-# Calculating Specific Heat        
+        
 average = 1/Timesteps*np.sum(kineticE)
 var = 1/Timesteps*np.sum(kineticE**2) - average**2
 A = var/average**2
