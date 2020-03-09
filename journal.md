@@ -113,9 +113,40 @@ useful.
 
 - Comparison of the results (Euler and Verlet) will be done by Kadhim.
 
+# Progress:
+
+- The code has been simulated for five particles in 3D.
+
+![alt text](Trajectory_of_all_particles_in_3D.png)
+
+
+- The verlet has been implemented in the for loop of the time steps and the comparison between bothe methods can be checked.
+
+
+# verlet algorithm
+    r[:,:,i] = r[:,:,i-1] + dt*v + 0.5*calculateForce(r[:,:,i-1])*dt**2
+    r[:,:,i] = r[:,:,i]%L
+    v = v + 0.5*dt*(calculateForce(r[:,:,i])+ calculateForce(r[:,:,i-1]) )
+
+
+
+
+- Invetigation of the total energies of both methods, one can clearly observe that the energy using the Euler method is not constant while it is constant for the Verlet method.
+
+- The energies are plotted for both methods and are compared to each other.
+
+![alt text](Verlet_Method_Energies.png)
+
+![alt text](Euler_Method_Energies.png)
 
 ## Week 4
-(due before 10 March)
+- The initialization of positions onto an fcc lattice will be done by Achmed.
+
+- The initial velocities obey a Maxwell-Boltzmann distribution will be done by Kadhim.
+
+- the rescaling of temperature and show how the desired temperature is attained after a certain amount of rescaling and equilibrating by Achmed.
+
+- Studying the observables and comparison by the literature will be done by Kadhim.
 
 
 ## Week 5
