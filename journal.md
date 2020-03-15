@@ -117,7 +117,7 @@ useful.
 
 - The code has been simulated for five particles in 3D.
 
-![alt text](Trajectory_of_all_particles_in_3D.png)
+![alt text](data/Trajectory_of_all_particles_in_3D.png)
 
 
 - The verlet has been implemented in the for loop of the time steps and the comparison between bothe methods can be checked.
