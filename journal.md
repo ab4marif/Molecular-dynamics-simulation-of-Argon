@@ -117,7 +117,7 @@ useful.
 
 - The code has been simulated for five particles in 3D.
 
-![alt text](Trajectory_of_all_particles_in_3D.png)
+![alt text](data/Trajectory_of_all_particles_in_3D.png)
 
 
 - The verlet has been implemented in the for loop of the time steps and the comparison between bothe methods can be checked.
@@ -135,9 +135,9 @@ useful.
 
 - The energies are plotted for both methods and are compared to each other.
 
-![alt text](Verlet_Method_Energies.png)
+![alt text](data/Verlet_Method_Energies.png)
 
-![alt text](Euler_Method_Energies.png)
+![alt text](data/Euler_Method_Energies.png)
 
 ## Week 4
 - The initialization of positions onto an fcc lattice will be done by Achmed.
@@ -153,15 +153,15 @@ useful.
 
 - The positions of the atoms are distributed onto a FCC lattice.
 
-![alt text](FCC_lattice.png)
+![alt text](data/FCC_lattice.png)
 
 - A normal distribuation is generated using SCIPY to observe the inititial velocities obeying the Maxwell-Boltzmann distribution.
 
-![alt text](WhatsApp Image 2020-03-09 at 20.05.44.jpeg)
+![alt text](data/WhatsApp Image 2020-03-09 at 20.05.44.jpeg)
 
 - Stabilization of the energy to obtain the correct temperature is implimented.
 
-![alt text](Restabilization.png)
+![alt text](data/Restabilization.png)
 
 - The specific heat according to Lebowitz is computed and the value is 104 in natural units.
 
@@ -175,4 +175,20 @@ print(cv)
 
 
 ## Week 5
-(due before 17 March)
+- The Implementation of the error calculation will be done by Achmed
+
+- With the error calculation Kadhim will calculate the specific heat with errors
+
+- Together we will make plans for the simulations to put into the report, We will try to validate our simulations by comparing a observable to the literature. We will do this for the specific heat.
+ 
+
+# Progress:
+
+- The iplementation of the error calculation was done by Achmed. I used the random data that was linked to in the lecture notes, with known correlation time $\tau = 50$. 
+- With the help of the curve_fit tool from scipy I was able to fit the autocorrelation function of the random data with r$exp(-t/\tau)$ to obtain the $\tau$.With N = 2e4 data point I was able to get the following:
+
+![alt text](data/autocorrelation_with_test_data_N2e4.png)
+
+- now to validate it, I increased the data points to N = 2e5. To see if the correlation time would be closer to 50
+- 
+![alt text](data/autocorrelation_with_test_data_N2e5.png)
