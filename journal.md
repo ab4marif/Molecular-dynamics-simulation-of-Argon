@@ -192,3 +192,14 @@ print(cv)
 - now to validate it, I increased the data points to N = 2e5. To see if the correlation time would be closer to 50
 - 
 ![alt text](data/autocorrelation_with_test_data_N2e5.png)
+
+- The spcecific heat array is calculated by generating a for loop to shuffle the kinetic energy array:
+
+kineticE_subset = np.random.choice(kineticE,N_subset)
+
+- Note that for increasing the N_subset, the mean values becomes closer the actual values and the error gets smaller. this is in agreement with the theory.
+
+
+- for the report, the specific heat observable will be run. the values of it will be compared to the literature and based on that we can draw some conclusions abpout our simulation.
+
+
