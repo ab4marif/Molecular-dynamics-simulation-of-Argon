@@ -195,7 +195,7 @@ print(cv)
 
 - The spcecific heat array is calculated by generating a for loop to shuffle the kinetic energy array:
 
-kineticE_subset = np.random.choice(kineticE,N_subset)
+                    kineticE_subset = np.random.choice(kineticE,N_subset)
 
 - Note that for increasing the N_subset, the mean values becomes closer the actual values and the error gets smaller. this is in agreement with the theory.
 
