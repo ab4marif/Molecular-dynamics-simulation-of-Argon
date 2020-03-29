@@ -11,7 +11,7 @@ kb = 1.38*10**-23
 unitCell = np.array([[[0, 0, 0], [0.5, 0.5, 0],
                            [0.5, 0, 0.5], [0, 0.5, 0.5] ]])
 
-multiplier = 5                           # amount of multiplication of the unitcell in all directions
+multiplier = 2                           # amount of multiplication of the unitcell in all directions
 
 D = unitCell.shape[2]                   # dimensions in accordence with the unit cell
 N = multiplier**D*unitCell.shape[1]     # number of particles consistent witht the unit cell
