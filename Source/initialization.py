@@ -32,6 +32,10 @@ def initilaze():
     meanVelocity = 0
     devVelocity = np.sqrt(vr.T_initial)
     v = np.random.normal(meanVelocity, devVelocity, (vr.N,vr.D))          # create intitial velocity from gauss distribution
+    bigv = np.broadcast_to(v, (vr.N, vr.N, vr.D))
+    v_center_mass = np.sum(bigv, axis = 1)/vr.N                           # calculate center of mass velocity
+    v = v - v_center_mass                                                 # substract venter of mass velocity to avoid drift
+
     r = np.zeros((vr.N, vr.D, vr.Timesteps))                                 # create matrix to store positions
     r[:,:,0] = fnc.createLattice(vr.multiplier, vr.unitCell, vr.L)           # initilaze position in FFC lattice
     F = fnc.calculateForce(r[:,:,0])
