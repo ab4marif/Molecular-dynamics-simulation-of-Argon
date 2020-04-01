@@ -8,6 +8,11 @@ from Source.initialization import *
 from Source.timeEvolution import *
 from plots import *
 
+""" This is the main file of the simulation. Running this file will initialize the system and let it evolve over time,
+    with parameters rho and T find at the end of this file. it will output the compressibility, specific heat and if set to
+    True also the plots of the energies and pari correlation function.
+"""
+
 start_time = time.time()
 
 def run_simulation(density, temperature, plots ):
@@ -36,7 +41,7 @@ def run_simulation(density, temperature, plots ):
     error_p = dp.bootstrapError(compressibility, 100)
     print(f"compressibility = {average_p} with error of {error_p} ")
 
-    kineticE_particle = kineticE/vr.N
+  
     # Calculating Specific Heat and error
     cv = dp.calculateSpecificHeat(kineticE)
     N_error = 100
@@ -44,6 +49,7 @@ def run_simulation(density, temperature, plots ):
     cv_SI = cv*vr.kb/vr.mass*10**-3                            # converting cv into SI units J/kg*K
     print(f"Specific Heat = {cv} with error of {error_cv}")
     print(fr"specific heat SI units = {cv_SI} [J/kgK]")
+    
     #Plots
     if plots == True:
         energyPlot(kineticE, potentialE, totalEnergy)
