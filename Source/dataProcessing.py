@@ -66,8 +66,8 @@ def calculateSpecificHeat(kineticE):
     var = np.sum(kineticE**2)/vr.N - average**2
     A = var/(average**2)
 
-    cv = (6*vr.N)/(2-3*vr.N*A)
-    #(2/(3*vr.N) -A)**(-1)
+    cv = (6*vr.N)/(2-3*vr.N*vr.T_initial*A)
+    
     return cv
 
 def specificHeatInteraction(specificHeat, potentialEnergy):
