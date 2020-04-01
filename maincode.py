@@ -60,7 +60,7 @@ def run_simulation(density, temperature, plots ):
 # simulation parameters
 density = 1
 temperature = 1
-plots = False                   # set to False if don't want to show plots
+plots = True                   # set to False if don't want to show plots
 
 run_simulation(density, temperature, plots)
 
