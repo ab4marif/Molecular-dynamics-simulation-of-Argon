@@ -27,4 +27,4 @@ Timesteps = time.shape[0]               # number of timesteps
 # initial temperature
 T_initial = 1.095
 
-print(N)
+print(f"Number of particles = {N}")
